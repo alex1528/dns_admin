@@ -1,0 +1,96 @@
+{% extends "domain_layout.html" %}
+
+{% block domain_content %}
+
+<br/>
+<br/>
+
+<div class="row" id="idc">
+</div>
+
+
+<ul class="gallery">
+</ul>
+
+
+<br/>
+
+
+<div class="pages"></div>
+    <div id="demo">
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-striped" id="example" width="100%">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>值</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <script type="text/javascript" charset="utf-8">
+          function renew_idc(){
+            $.ajax({
+              type: "GET",
+              dataType: "json",
+              url: "/api/v1/domains",
+              data:{},
+              success: function(data) {
+                var a="<div class='th_tabs'><strong>域名</strong></div><div class='rd-button'><label><input type='radio' class='idc_radio' name='idc' id='all' value='all' checked='true'><span>all</span></input></label></div>";
+                $.each(data, function(i, item){
+                  a = a + "<div class='rd-button'><label><input class='idc_radio' type='radio' name='idc' id='" +item.name + "' value='" + item.domain + "'><span>" + item.name + "</span></label></div>";
+                });
+                $("#idc").empty();
+                $(a).appendTo("#idc");
+              },
+              error:function(data) {
+                alert(data);
+              }
+            });
+          }
+
+          function renewserverTable(){
+            var idc = arguments[0]?arguments[0]:"";
+            if (idc == 'all') {
+              // alert(idc);
+              var idc = "";
+            }
+            return $('#example').dataTable( {
+                "bProcessing": true,
+                "bPaginate": true,
+                "sAjaxSource": "../api/v1/dt/records/"+idc,
+                "fnInitComplete": function() {
+                  this.fnAdjustColumnSizing(true);
+                },
+             } );
+          }
+
+          $(document).ready(function() {
+            $("body").on("click",".idc_radio",function() {
+                $('.idc_radio').attr("checked",false);
+                $('.idc_radio').parents('label').find('span').attr("style", "");
+                $(this).attr("checked", true);
+                $(this).parents('label').find('span').attr("style","background-color:#0088cc;color:#FFFFFF");
+                var idc = $("input[name='idc'][checked]").attr("id");
+                //alert(idc);
+
+                if (typeof(server_table) !== 'undefined') {
+                  server_table.fnClearTable(0);
+                  server_table.fnDestroy();
+                }
+                server_table = renewserverTable(idc);
+            });
+
+            renew_idc();
+            var server_table = renewserverTable();
+
+          });
+        </script>
+
+    </div>
+</div>
+
+{% end %}

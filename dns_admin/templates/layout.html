@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NOSA DNS Admin System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/jquery.dataTables.js"></script>
+    <!-- Page Specific Plugins -->
+
+    <link href="/static/css/assets.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/demo_page.css">
+    <link rel="stylesheet" href="/static/css/demo_table.css">
+
+
+  </head>
+  <body>
+    <nav class="navbar" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">   Nosa DNS Admin</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li class=""><a href="/domain/index">域名展示</a></li>
+          <li class=""><a href="/oper/index">域名操作工具</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right navbar-user">
+          <li class="dropdown user-dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              {% if handler.get_secure_cookie("username") %}
+              <i class="icon-user" id="login_user">
+              {{ (handler.get_secure_cookie("username")).split("@")[0] }}</i>
+              {% else %}
+              <i class="icon-user" id="login_user">豌豆</i>
+              {% end %}    
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/logout"><i class="icon-signout"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+    <div class="" id="page-wrapper">
+      {% block content %}
+      {% end %}
+    </div><!-- /#page-wrapper -->
+
+    <div class="footer" id="footer" style="border-top:1px solid #e5e5e5; margin-top: 35px; padding: 25px 0 26px;">
+      <div class="container">
+        <a class="pull-right" href="/">
+          <img style="vertical-align:middle; height: 35px; width:80px;" src="/static/img/wandou_logo.png" alt="WandouPMS" />
+        </a>
+        <p>Copyright &copy; NOSA.2015</p>
+      </div>
+    </div>
+  </body>
+</html>

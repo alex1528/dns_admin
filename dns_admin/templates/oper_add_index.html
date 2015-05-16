@@ -1,0 +1,127 @@
+{% extends "oper_layout.html" %}
+
+{% block oper_content %}
+
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="row">
+      <div class="col-md-2">
+        输入
+      </div>
+        <div class="btn-group col-md-10">
+      <textarea class="form-control inputtext" rows="10"></textarea>
+        </div>
+    </div>
+  
+    <br>
+  
+    <div class="row">
+       <div class="col-md-2">
+       </div>
+       <div class="col-md-10">
+         第一列是hostname或内网域名(不用写 nosa.me), 第二列是ip, 用空格分开。
+       </div>
+    </div>  
+  
+    <br>
+    <br>
+  
+    <div class="row">
+      <div class="col-md-12">
+      <button type="button" class="btn btn-primary mybutton">增加</button>      
+      </div>    
+    </div>
+  
+    <br>
+    <br>
+  
+    <div class="row">
+      <div class="col-md-2">
+        输出
+      </div>
+      <div class="btn-group col-md-10">
+        <textarea class="form-control outputtext" rows="10"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  // $('.mybutton').click(function() {
+  $(document).on('click',".mybutton", function(){
+
+    var confirm = window.confirm("确定增加?");
+    // alert(confirm);
+
+    if (confirm == true) {
+      // alert("确认增加");
+
+      input_text = $(".inputtext").val();
+      // alert(input_text);
+      // input_array = trim(input_text).split("\n");
+      input_array = input_text.trim().split("\n");
+      // alert(input_array);
+  
+      var input_array_new = new Array();
+      // 对拿到的数组进行初始化,把空行删掉,并把有效字段左右空格去掉
+      for (var i = 0; i < input_array.length; i++) {
+        item = input_array[i];
+  
+        var item_new = item.trim();
+        if (item_new == "") {} 
+        else {
+          var tmp = item_new.split(/\s+/);
+          var hostname = tmp[0];
+          var ip = tmp[1];
+          input_array_new.push({"hostname":hostname,"ip":ip});
+        };
+  
+      };
+      // alert(input_array);
+      // alert(input_array_new);
+      // console.log(input_array_new);
+  
+      // alert(input_array);
+      input_json = JSON.stringify(input_array_new);
+      // alert(input_json);
+  
+      $.ajax({
+          type: 'POST',
+          url: "/api/v1/add",
+          cache:false, 
+          data: {
+            "dnslist":input_json,
+          },
+          dataType: "json",
+          success:function(data) {
+            $('.outputtext').html("");
+  
+            if(data.status == "success"){    
+              output_array = data.result;
+              // alert(output_array);
+  
+              $('.outputtext').append(output_array + "\n");
+  
+            }else{    
+              output_array = data.result;              
+              $('.outputtext').append(output_array);
+            }    
+          },
+          error : function() {
+            alert("异常!");
+          },
+      });
+    }
+    else {};
+
+  });
+
+
+</script>
+
+
+{% end %}
+
