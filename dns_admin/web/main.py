@@ -260,7 +260,7 @@ class QueryHandler(base.BaseHandler):
 
         key = self.get_argument("key", None)
         dnslist = self.get_argument("dnslist", None)
-        dnslist = eval(dnslist)
+        dnslist = json.loads(dnslist)
 
         if key not in ["hostname", "ip"]:
             ret = {
@@ -316,7 +316,7 @@ class AddHandler(base.BaseHandler):
             self.redirect("/login")
 
         dnslist = self.get_argument("dnslist", None)
-        dnslist = eval(dnslist)
+        dnslist = json.loads(dnslist)
 
         if dnslist is None:
             ret = {
@@ -389,7 +389,7 @@ class ModifyHandler(base.BaseHandler):
 
         key = self.get_argument("key", None)
         dnslist = self.get_argument("dnslist", None)
-        dnslist = eval(dnslist)
+        dnslist = json.loads(dnslist)
 
         if key not in ["hostname", "ip"]:
             ret = {
@@ -480,7 +480,7 @@ class DeleteHandler(base.BaseHandler):
 
         key = self.get_argument("key", None)
         dnslist = self.get_argument("dnslist", None)
-        dnslist = eval(dnslist)
+        dnslist = json.loads(dnslist)
 
         if key not in ["hostname", "ip"]:
             ret = {
