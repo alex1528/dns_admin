@@ -6,7 +6,6 @@
 
 import os
 import sys
-import shutil
 
 from dns_admin.libs import logger, utils, const, \
     funcs, mysqloj, template
